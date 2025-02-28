@@ -45,7 +45,7 @@ const AppToDo = () => {
           setColumns(newColumns);
         }
       });
-  }, []);
+  }, [columns]);
 
   const handleAddTask = (content: string, columnId: string) => {
     const newTask: Task = {
