@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 const AppToDo = () => {
   // const navigate = useNavigate();
   // Sample columns data
-  const [tasks, setTasks] = useState<Task[]>([]);
+  // const [tasks, setTasks] = useState<Task[]>([]);
   const [isModal, setIsModal] = useState(false);
   const [columns, setColumns] = useState<ColumnProps[]>([
     {
@@ -117,6 +117,7 @@ const AppToDo = () => {
                     content: newContent,
                   };
                 }
+                console.log(task.content);
                 return task;
               }),
             };
@@ -143,19 +144,30 @@ const AppToDo = () => {
       };
     });
     console.log(taskToMove);
-    if (taskToMove) {
-      const updatedColumns = newColumns.map((column) => {
-        if (column.id === toColumnId) {
-          return {
-            ...column,
-            tasks: [...column.tasks, { ...taskToMove!, idColumn: toColumnId }],
-          };
-        }
-        return column;
-      });
 
-      setColumns(updatedColumns);
-      console.log(updatedColumns);
+    if (taskToMove) {
+      const updateTask: Task = taskToMove;
+      updateTask.idColumn = toColumnId;
+      console.log(updateTask);
+      fetch(`http://localhost:3001/tasks/${taskId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updateTask),
+      })
+        .then((response) => response.json())
+        .then(() => {
+          const updatedColumns = newColumns.map((column) => {
+            if (column.id === toColumnId) {
+              return {
+                ...column,
+                tasks: [...column.tasks, updateTask],
+              };
+            }
+            return column;
+          });
+          setColumns(updatedColumns);
+          console.log(updateTask);
+        });
     }
   };
 
@@ -196,9 +208,9 @@ const AppToDo = () => {
                 </div>
 
                 <ul>
-                  {column.tasks.map((task) => (
+                  {column.tasks.map((task, index) => (
                     <ItemTask
-                      key={task.id}
+                      key={index}
                       task={task}
                       columnId={column.id}
                       handleRemoveTask={handleRemoveTask}

@@ -12,16 +12,20 @@ import { hover } from "@testing-library/user-event/dist/hover";
 
 type Props = {
   task: Task;
+
   columnId: string;
   handleRemoveTask: (taskId: number, columnId: string) => void;
   handleUpdateTask: (taskId: number, columnId: string) => void;
+
   handleMoveTask: (taskId: number, toColumnId: string) => void;
 };
 
 const ItemTask = ({
   task,
   columnId,
+
   handleRemoveTask,
+
   handleUpdateTask,
   handleMoveTask,
 }: Props) => {
@@ -58,6 +62,7 @@ const ItemTask = ({
               icon={faPenToSquare}
             />
           </div>
+
           <div
             className="btn-task"
             style={{ color: "red", fontWeight: "400" }}
