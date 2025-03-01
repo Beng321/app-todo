@@ -148,6 +148,20 @@ code {
   color: #fff;
 }
 
+.home-button {
+  color: #5680f9;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  line-height: 30px;
+  text-decoration: none;
+  padding: 5px 20px;
+  border: 2px solid #ccc;
+  border-radius: 5px; /* Bo góc */
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 .todo-button {
   color: #5680f9;
   font-size: 22px;
@@ -163,7 +177,8 @@ code {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.todo-button:hover {
+.todo-button,
+.home-button:hover {
   background-color: #5680f9;
   color: white;
 }

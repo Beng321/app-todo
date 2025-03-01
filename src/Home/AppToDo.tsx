@@ -175,7 +175,10 @@ const AppToDo = () => {
     <div>
       <div className="Header-home">
         <div className="btn-task" style={{ marginTop: "10px" }}>
-          <Link to={"/"}> Home</Link>
+          <Link to={"/"} className="home-button">
+            {" "}
+            Home
+          </Link>
         </div>
         <h1>TO DO LIST</h1>
         <div className="Content-home">
