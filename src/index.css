@@ -144,6 +144,8 @@ code {
   font-size: 22px;
   height: 100vh;
   text-align: center;
+  background-color: #1d2a35;
+  color: #fff;
 }
 
 .todo-button {
@@ -152,13 +154,13 @@ code {
   font-weight: 700;
   letter-spacing: 0.5px;
   line-height: 30px;
-  text-decoration: none; /* Loại bỏ gạch chân mặc định của thẻ <a> */
-  padding: 10px 20px; /* Thêm padding để button trông đẹp hơn */
+  text-decoration: none;
+  padding: 10px 20px;
   border: 2px solid #ccc;
   border-radius: 5px; /* Bo góc */
-  background-color: transparent;
+  background-color: white;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease; /* Hiệu ứng hover mượt mà */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .todo-button:hover {
