@@ -2,7 +2,7 @@ import { ReactElement, useState } from "react";
 
 type Props = {
   width?: string;
-  height?: string;
+  // height?: string;
   children?: ReactElement;
   isShow?: boolean;
   title?: string;
@@ -12,7 +12,7 @@ type Props = {
 
 const AddTaskModal = ({
   width,
-  height,
+  // height,
   isShow,
   onClose,
   onAddTask,
