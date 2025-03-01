@@ -138,3 +138,30 @@ code {
   color: #fff;
   font-size: 14px;
 }
+.homepage-container {
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  height: 100vh;
+  text-align: center;
+}
+
+.todo-button {
+  color: #5680f9;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  line-height: 30px;
+  text-decoration: none; /* Loại bỏ gạch chân mặc định của thẻ <a> */
+  padding: 10px 20px; /* Thêm padding để button trông đẹp hơn */
+  border: 2px solid #ccc;
+  border-radius: 5px; /* Bo góc */
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Hiệu ứng hover mượt mà */
+}
+
+.todo-button:hover {
+  background-color: #5680f9;
+  color: white;
+}
