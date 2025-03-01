@@ -1,17 +1,13 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddTaskModal from "../components/AddTaskModal";
 import { ColumnProps } from "../sections/TypeColumn";
 import { Task } from "../sections/TypeColumn";
 import ItemTask from "../item/itemTask";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-// import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { data, Link } from "react-router-dom";
 
 const AppToDo = () => {
-  // const navigate = useNavigate();
-  // Sample columns data
-  // const [tasks, setTasks] = useState<Task[]>([]);
   const [isModal, setIsModal] = useState(false);
   const [columns, setColumns] = useState<ColumnProps[]>([
     {
@@ -30,8 +26,7 @@ const AppToDo = () => {
       tasks: [],
     },
   ]);
-
-  useEffect(() => {
+  const fetchTasks = () => {
     fetch("http://localhost:3001/tasks")
       .then((response) => response.json())
       .then(({ data }) => {
@@ -45,32 +40,29 @@ const AppToDo = () => {
           setColumns(newColumns);
         }
       });
-  }, [columns]);
+  };
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
 
   const handleAddTask = (content: string, columnId: string) => {
+    console.log(columnId);
     const newTask: Task = {
       id: Math.floor(Math.random() * 1000),
       content,
       createdAt: new Date(),
-      idColumn: columnId, // Add this line
+      idColumn: columnId,
     };
+
     fetch("http://localhost:3001/tasks", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newTask),
     })
       .then((response) => response.json())
-      .then((data) => {
-        const newColumns = columns.map((column) => {
-          if (column.id === columnId) {
-            return {
-              ...column,
-              tasks: [...column.tasks, data],
-            };
-          }
-          return column;
-        });
-        setColumns(newColumns);
+      .then(() => {
+        fetchTasks();
       });
   };
 
@@ -99,32 +91,36 @@ const AppToDo = () => {
 
   const handleUpdateTask = (taskId: number) => {
     const newContent = window.prompt("Enter new content");
-    fetch(`http://localhost:3001/tasks/${taskId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content: newContent }),
-    })
-      .then((response) => response.json())
-      .then(() => {
-        if (newContent) {
-          const newColumns = columns.map((column) => {
-            return {
-              ...column,
-              tasks: column.tasks.map((task) => {
-                if (task.id === taskId) {
-                  return {
-                    ...task,
-                    content: newContent,
-                  };
-                }
-                console.log(task.content);
-                return task;
-              }),
-            };
-          });
+    if (newContent) {
+      const taskToUpdate = columns
+        .flatMap((column) => column.tasks)
+        .find((task) => task.id === taskId);
+
+      const updatedTask = { ...taskToUpdate, content: newContent };
+
+      fetch(`http://localhost:3001/tasks/${taskId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedTask),
+      })
+        .then((response) => response.json())
+        .then(() => {
+          const newColumns = columns.map((column) => ({
+            ...column,
+            tasks: column.tasks.map((task) => {
+              if (task.id === taskId) {
+                return {
+                  ...task,
+                  content: newContent,
+                };
+              }
+              return task;
+            }),
+          }));
+
           setColumns(newColumns);
-        }
-      });
+        });
+    }
   };
 
   const handleMoveTask = (taskId: number, toColumnId: string) => {
@@ -143,12 +139,11 @@ const AppToDo = () => {
         tasks: newTasks,
       };
     });
-    console.log(taskToMove);
+    console.log(toColumnId);
 
     if (taskToMove) {
       const updateTask: Task = taskToMove;
       updateTask.idColumn = toColumnId;
-      console.log(updateTask);
       fetch(`http://localhost:3001/tasks/${taskId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -166,7 +161,6 @@ const AppToDo = () => {
             return column;
           });
           setColumns(updatedColumns);
-          console.log(updateTask);
         });
     }
   };
